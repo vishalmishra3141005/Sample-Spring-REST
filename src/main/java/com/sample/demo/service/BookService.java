@@ -7,6 +7,7 @@ import com.sample.demo.model.Book;
 import com.sample.demo.respository.BookRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +20,9 @@ public class BookService {
     private final BookRepository bookRepo;
     private final BookMapper bookMapper;
 
-    public List<BookDTO> getAllBooks() {
-        return bookRepo.findAll()
+    public List<BookDTO> getAllBooks(int offset, int limit) {
+        PageRequest pageRequest = PageRequest.of(offset, limit);
+        return bookRepo.findAll(pageRequest)
                 .stream()
                 .map(bookMapper::toDTO)
                 .toList();
